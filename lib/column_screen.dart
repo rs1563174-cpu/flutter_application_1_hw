@@ -17,7 +17,8 @@ class  _ColumnScreenState extends State<ColumnScreen>{
       ),
     body: SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, 
+        crossAxisAlignment: CrossAxisAlignment.start, // horizontal
+        mainAxisAlignment: MainAxisAlignment.start,//vertical
         children:[
            Text("Name: Sarthik, Class: MCA, Roll No: 1",
           style: TextStyle(fontSize: 20)),
