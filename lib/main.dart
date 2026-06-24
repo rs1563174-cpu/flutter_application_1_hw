@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'row_screen.dart';
+import 'dashboard_screen.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RowScreen(),
+      home: DashbroardScrren(),
     ),
   );
 }
