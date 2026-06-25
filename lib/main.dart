@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dashboard_screen.dart';
+import 'custom_bottom_bar.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DashbroardScrren(),
+      home: CustomBotttomBar(),
     ),
   );
 }
