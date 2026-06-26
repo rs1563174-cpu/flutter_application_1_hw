@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Hello Search Screen"));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Search"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Fluttertoast.showToast(
+              msg: "SearchScreen",
+              toastLength: Toast.LENGTH_SHORT,
+            );
+          },
+          child: const Text("Search Button"),
+        ),
+      ),
+    );
   }
 }

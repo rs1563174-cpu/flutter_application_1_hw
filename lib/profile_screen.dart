@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Profile Screen"));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Profile"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Fluttertoast.showToast(
+              msg: "ProfileScreen",
+              toastLength: Toast.LENGTH_SHORT,
+            );
+          },
+          child: const Text("Profile Button"),
+        ),
+      ),
+    );
   }
 }
