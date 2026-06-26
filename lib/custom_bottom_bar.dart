@@ -56,11 +56,18 @@ class _CustomBotttomBarState extends State<CustomBotttomBar> {
               GestureDetector(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.settings),
-                    SizedBox(height: 5),
-                    Text("Settings"),
-                  ],
+                 children: [
+                   selectedIndex == 1
+                    ? Icon(Icons.settings, color: Colors.white)
+                    : Icon(Icons.settings),
+            SizedBox(height: 5),
+            Text(
+                  "Settings",
+                 style: TextStyle(
+                  color: selectedIndex == 1 ? Colors.white : Colors.black,
+             ),
+          ),
+        ],
                 ),
                 onTap: () {
                   setState(() {
@@ -72,13 +79,20 @@ class _CustomBotttomBarState extends State<CustomBotttomBar> {
               ),
 
               GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.account_circle),
-                    SizedBox(height: 5),
-                    Text("Profile"),
-                  ],
+                 child: Column(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     selectedIndex == 2
+                ? Icon(Icons.account_circle, color: Colors.white)
+                : Icon(Icons.account_circle),
+             SizedBox(height: 5),
+                Text(
+                 "Profile",
+                   style: TextStyle(
+                     color: selectedIndex == 2 ? Colors.white : Colors.black,
+             ),
+            ),
+          ],
                 ),
                 onTap: () {
                   setState(() {
