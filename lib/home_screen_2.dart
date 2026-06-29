@@ -33,26 +33,36 @@ class _HomeScreen2State extends State<HomeScreen2> {
           SizedBox(height: 10),
           OutlinedButton(
             onPressed: () {
-             Fluttertoast.showToast(
-             msg: "Outlined Button Clicked",
-              toastLength: Toast.LENGTH_SHORT,
-           );
-           print("My name is :Coder Roots");
+             ScaffoldMessenger.of(
+              context,
+             ).showSnackBar(SnackBar(content: Text("This is my SnackBar")));
           }, child: Text("Outlined Button")),
 
           SizedBox(height: 10),
-
           TextButton(
             onPressed: () {
-              Fluttertoast.showToast(
-              msg: "Text Button Clicked",
-                toastLength: Toast.LENGTH_SHORT,
-             );
-             print("Text Button Clicked");
+              showAltertDailog(context);
           }, child: Text("Text Button")),
         ],
       ),
     );
   }
+}
+
+void showAltertDailog(BuildContext context){
+  showDialog(
+    context: context,
+    builder: (BuildContext context){
+      return AlertDialog(
+        title: Text("Title"),
+
+        content: Text("This is my Altert Message"),
+        actions:[
+          TextButton(onPressed: () {}, child: Text("Accept")),
+          TextButton(onPressed: () {}, child: Text("Cancel")),
+        ],
+      );
+    },
+  );
 }
   
