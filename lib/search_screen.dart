@@ -69,7 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusGeometry.circular(10),
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.pink,
                   foregroundColor: Colors.white,
                 ),
 
@@ -85,4 +85,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-
