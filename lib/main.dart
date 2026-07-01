@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'splash_screen.dart';
+import 'custom_bottom_bar.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-     home: SplashScreen(),
+      home: CustomBotttomBar(),
     ),
   );
 }

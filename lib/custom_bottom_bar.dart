@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen_2.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
+import 'list_build.dart';
 
 class CustomBotttomBar extends StatefulWidget {
   const CustomBotttomBar({super.key});
@@ -13,7 +14,7 @@ class CustomBotttomBar extends StatefulWidget {
 class _CustomBotttomBarState extends State<CustomBotttomBar> {
   int selectedIndex = 0;
 
-  List screen = [HomeScreen2(), SearchScreen(), ProfileScreen()];
+  List screen = [HomeScreen2(), SearchScreen(), ProfileScreen(),ListBuild(),];
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +102,22 @@ class _CustomBotttomBarState extends State<CustomBotttomBar> {
                   });
                 },
               ),
+                GestureDetector(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.list),
+                    SizedBox(height: 5),
+                    Text("List"),
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedIndex = 3;
+                    print("check SelectedIndex value: $selectedIndex");
+                  });
+                },
+              ),
             ],
           ),
         ),
@@ -108,4 +125,4 @@ class _CustomBotttomBarState extends State<CustomBotttomBar> {
     );
   }
 }
-
+         
