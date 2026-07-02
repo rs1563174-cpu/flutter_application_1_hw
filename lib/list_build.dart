@@ -10,8 +10,9 @@ class ListBuild extends StatefulWidget {
 }
 
 class _ListBuildState extends State<ListBuild> {
-  List<String> nameList = ["Amrit", "Bipasha", "Gurbhej", "Riya", "Shivani"];
+  List<String> nameList = ["Riya", "Bipasha", "Vanshika", "Amrit", "Shivani"];
   TextEditingController nameController =TextEditingController();
+  int? editIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +22,28 @@ class _ListBuildState extends State<ListBuild> {
       itemCount: nameList.length,
       itemBuilder: (BuildContext context, index) {
         return GestureDetector(
-          onTap:(){
+          onTap: () {
             print("Check Index value:$index");
-            setState((){
-              nameList[index] = "Riya Sharma";
-            });
+             editIndex = index;
+                nameController.text = nameList[index];
+               customDialog(context);
           },
           child: Card(
              margin: EdgeInsets.all(5),
              child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(nameList[index]),
-              ),
+              ListTile(
+                title: Text(nameList[index]),
+              trailing: IconButton(
+               icon: const Icon(Icons.delete, color: Colors.red),
+               onPressed: () {
+                setState(() {
+                  nameList.removeAt(index);
+             });
+          },
+       ),
+     ),
                   ],
                 ),
               ),
@@ -90,10 +98,15 @@ class _ListBuildState extends State<ListBuild> {
                       if (nameController.text.isEmpty) {
                         Fluttertoast.showToast(msg: "Enter Student Name");
                       } else {
-                        setState(() {
+                       setState(() {
+                        if (editIndex == null) {
                           nameList.add(nameController.text);
-                          nameController.clear();
-                        });
+                        } else {
+                           nameList[editIndex!] = nameController.text;
+                           editIndex = null;
+                        }
+                     nameController.clear();
+                     });
                       }
                     },
 
