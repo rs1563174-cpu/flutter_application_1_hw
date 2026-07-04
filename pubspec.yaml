@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^9.1.0
+  sqflite: ^2.4.3
 
 dev_dependencies:
   flutter_test:
