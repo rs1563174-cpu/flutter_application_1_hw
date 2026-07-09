@@ -73,6 +73,15 @@ class _StudentListState extends State<StudentList> {
                         },
                         icon: Icon(Icons.edit),
                       ),
+                      IconButton(
+                        onPressed: () async {
+                          await db.deleteStudent(nameList[index].id!);
+
+                          Fluttertoast.showToast(msg: "Student Deleted");
+                           getStudentData();
+                     },
+                    icon: const Icon(Icons.delete),
+                   ),
 
                       IconButton(onPressed: () {
 
