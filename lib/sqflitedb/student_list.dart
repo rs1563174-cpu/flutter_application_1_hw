@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'database_help.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class StudentList extends StatefulWidget {
@@ -9,22 +10,44 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
-   List<Student> nameList = [];
+  DatabaseHelp db = DatabaseHelp();
+  List<StudentClass> nameList = [];
   TextEditingController nameCOntroller = TextEditingController();
   TextEditingController classController = TextEditingController();
   TextEditingController rollNoController = TextEditingController();
   TextEditingController idController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    print("Call InitState auto");
+    getStudentData();
+  }
+
+  Future<void> getStudentData() async {
+    try {
+      nameList = await db.getStudents();
+      setState(() {});
+
+      for (int i = 0; i < nameList.length; i++) {
+        print("Get NameList name: ${nameList[i].name} , ${nameList[i].id}");
+      }
+    } catch (e) {
+      print("Check Get Data Exception: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Sqflite Database"),
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.amber,
       ),
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: 2,
+            itemCount: nameList.length,
             itemBuilder: (BuildContext context, index) {
               return Card(
                 child: Padding(
@@ -37,15 +60,24 @@ class _StudentListState extends State<StudentList> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Name"),
-                            Text("Roll No"),
-                            Text("Class"),
+                            Text(nameList[index].name.toString()),
+                            Text(nameList[index].rollNo.toString()),
+                            Text(nameList[index].className.toString()),
                           ],
                         ),
                       ),
 
-                      Icon(Icons.edit),
-                      Icon(Icons.delete),
+                      IconButton(
+                        onPressed: () {
+                          customsDialog(context, index);
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
+
+                      IconButton(onPressed: () {
+
+                        
+                      }, icon: Icon(Icons.delete)),
                     ],
                   ),
                 ),
@@ -58,7 +90,7 @@ class _StudentListState extends State<StudentList> {
             right: 10,
             child: FloatingActionButton(
               onPressed: () {
-
+                customsDialog(context, -1);
               },
               child: Icon(Icons.add),
             ),
@@ -67,11 +99,13 @@ class _StudentListState extends State<StudentList> {
       ),
     );
   }
-    void customDialog(context, int index) {
+
+  void customsDialog(context, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         if (index != -1) {
+          print("Check ID or Riya: ${nameList[index].id.toString()}");
           nameCOntroller.text = nameList[index].name.toString();
           idController.text = nameList[index].id.toString();
           classController.text = nameList[index].className.toString();
@@ -84,16 +118,8 @@ class _StudentListState extends State<StudentList> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Add Student",
+                  index == -1 ? "Add Student" : "Update Student",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  controller: idController,
-                  decoration: InputDecoration(
-                    label: Text("Enter Your Id"),
-                    border: OutlineInputBorder(),
-                  ),
                 ),
 
                 SizedBox(height: 10),
@@ -127,9 +153,7 @@ class _StudentListState extends State<StudentList> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (idController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Enter ID");
-                      } else if (nameCOntroller.text.isEmpty) {
+                      if (nameCOntroller.text.isEmpty) {
                         Fluttertoast.showToast(msg: "Enter Your Name");
                       } else if (classController.text.isEmpty) {
                         Fluttertoast.showToast(msg: "Enter Class Name");
@@ -137,21 +161,32 @@ class _StudentListState extends State<StudentList> {
                         Fluttertoast.showToast(msg: "Enter Roll No");
                       } else {
                         setState(() {
-                          Student std = Student(
-                          
-                            nameCOntroller.text.toString(),
-                            classController.text.toString(),
-                            rollNoController.text.toString(),
-                          );
+                          try {
+                            if (index == -1) {
+                              StudentClass std = StudentClass(
+                                name: nameCOntroller.text.toString(),
+                                className: classController.text.toString(),
+                                rollNo: rollNoController.text.toString(),
+                              );
 
-                          if (index == -1) {
-                            nameList.add(std);
-                          } else {
-                            nameList[index].name = nameCOntroller.text;
-                            nameList[index].id = idController.text;
-                            nameList[index].rollNo = rollNoController.text;
-                            nameList[index].className = classController.text;
+                              db.insertStudent(std);
+                            } else {
+                              StudentClass std1 = StudentClass(
+                                id: nameList[index].id,
+                                name: nameCOntroller.text.toString(),
+                                className: classController.text.toString(),
+                                rollNo: rollNoController.text.toString(),
+                              );
+                              db.updateStudent(std1);
+                            }
+
+                            Navigator.pop(context);
+
+                            getStudentData();
+                          } catch (e) {
+                            print("Check Exception: $e");
                           }
+
                           nameCOntroller.clear();
                           idController.clear();
                           classController.clear();
@@ -176,6 +211,33 @@ class _StudentListState extends State<StudentList> {
           ),
         );
       },
+    );
+  }
+}
+
+class StudentClass {
+  int? id;
+  String name;
+  String className;
+  String rollNo;
+
+  StudentClass({
+    this.id,
+    required this.name,
+    required this.className,
+    required this.rollNo,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {"id": id, "name": name, "className": className, "rollNo": rollNo};
+  }
+
+  factory StudentClass.fromMap(Map<String, dynamic> map) {
+    return StudentClass(
+      id: map["id"],
+      name: map["name"],
+      className: map["className"],
+      rollNo: map["rollNo"],
     );
   }
 }
